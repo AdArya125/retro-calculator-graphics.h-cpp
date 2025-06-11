@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Retro Calculator",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "-w",                      // 👈 Suppress all warnings
+        "src/main.cpp",            // Add other .cpp files as you modularize
+        "-o",
+        "build/calcy.exe",
+        "-lbgi",
+        "-lgdi32",
+        "-lcomdlg32",
+        "-luuid",
+        "-loleaut32",
+        "-lole32"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

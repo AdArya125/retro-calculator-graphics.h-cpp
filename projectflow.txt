@@ -1,0 +1,15 @@
+Setup 
+
+1. Install mingw, either do it manually or use chocolatey
+
+2. Setup path variables, add C:\MINGW\bin to path variables (or the location you have installed Mingw), and check by running the command "gcc --version" or "g++ --version" on the terminal
+
+3. once successfully setup, download and add the three files for graphics.h in the include and bin folders.
+
+4. Go to "Test graphics.h" directory and run the command "g++ main.cpp -o test.exe -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32
+" to check proper working of graphics.h with mingw.
+
+5. Add the directory structures, src\ for main.cpp, build\ for output exe file, and other folders
+
+
+
