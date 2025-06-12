@@ -1,64 +1,43 @@
 #include "graphics_ui.h"
+#include "ui_constants.h"
 
-const int buttonWidth = 80;
-const int buttonHeight = 40;
 const int numRows = 6;
 const int numCols = 5;
+const int buttonWidth = 80;
+const int buttonHeight = 40;
 
-void drawCalculatorBox()
+void drawDisplay(const string &text)
 {
+    setfillstyle(SOLID_FILL, BLACK);
+    bar(UI_LEFT_X, UI_TOP_Y - 40, UI_LEFT_X + numCols * buttonWidth, UI_TOP_Y - 5);
+
     setcolor(WHITE);
-    // Horizontal lines
-    for (int i = 0; i <= numRows; ++i)
-    {
-        int y = UI_TOP_Y + i * buttonHeight;
-        line(UI_LEFT_X, y, UI_LEFT_X + numCols * buttonWidth, y);
-    }
-    // Vertical lines
-    for (int j = 0; j <= numCols; ++j)
-    {
-        int x = UI_LEFT_X + j * buttonWidth;
-        line(x, UI_TOP_Y, x, UI_TOP_Y + numRows * buttonHeight);
-    }
-}
-
-void highlightButton(int row, int col)
-{
-    setfillstyle(SOLID_FILL, LIGHTGRAY);
-    bar(
-        UI_LEFT_X + col * buttonWidth + 2,
-        UI_TOP_Y + row * buttonHeight + 2,
-        UI_LEFT_X + (col + 1) * buttonWidth - 2,
-        UI_TOP_Y + (row + 1) * buttonHeight - 2);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 1);
+    outtextxy(UI_LEFT_X + 10, UI_TOP_Y - 30, const_cast<char *>(text.c_str()));
 }
 
 void drawTextLabels(bool trigVisible)
 {
     settextstyle(BOLD_FONT, HORIZ_DIR, 1);
-    outtextxy(UI_LEFT_X + 10, UI_TOP_Y + 10, "TRIGNO");
-    outtextxy(UI_LEFT_X + 110, UI_TOP_Y + 10, "1");
-    outtextxy(UI_LEFT_X + 190, UI_TOP_Y + 10, "2");
-    outtextxy(UI_LEFT_X + 270, UI_TOP_Y + 10, "3");
-    outtextxy(UI_LEFT_X + 350, UI_TOP_Y + 10, "+");
 
-    // Add more text labels like 4-9, -, *, /, etc. if needed
-    // You can port labels from your original `text()` function
+    for (int row = 0; row < numRows; ++row)
+    {
+        for (int col = 0; col < numCols; ++col)
+        {
+            const char *label = buttonLabels[row][col];
+            if (label && strlen(label) > 0)
+            {
+                int x = UI_LEFT_X + col * buttonWidth + 10;
+                int y = UI_TOP_Y + row * buttonHeight + 10;
+                outtextxy(x, y, const_cast<char *>(label));
+            }
+        }
+    }
 
     if (trigVisible)
     {
-        outtextxy(UI_LEFT_X - 70, UI_TOP_Y + 10, "Sin");
-        outtextxy(UI_LEFT_X - 70, UI_TOP_Y + 50, "Cos");
-        outtextxy(UI_LEFT_X - 70, UI_TOP_Y + 90, "Tan");
+        outtextxy(UI_LEFT_X - 70, UI_TOP_Y + 10, (char *)"Sin");
+        outtextxy(UI_LEFT_X - 70, UI_TOP_Y + 50, (char *)"Cos");
+        outtextxy(UI_LEFT_X - 70, UI_TOP_Y + 90, (char *)"Tan");
     }
-}
-
-void drawButtons(bool trigVisible)
-{
-    drawCalculatorBox();
-    drawTextLabels(trigVisible);
-}
-
-void clearUI()
-{
-    cleardevice();
 }

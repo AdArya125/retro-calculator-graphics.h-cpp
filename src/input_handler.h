@@ -2,20 +2,17 @@
 #define INPUT_HANDLER_H
 
 #include "../include/common.h"
+#include <string>
 
-// Grid state (shared by navigation functions)
 extern int selectedRow;
 extern int selectedCol;
 extern const int numRows;
 extern const int numCols;
 
-// Draws the current button highlight
 void updateHighlight();
-
-// Processes keyboard input and updates highlight or triggers action
 void handleKeyPress(char key, bool &running);
-
-// Maps selected button to a label or action (for future logic)
 void handleButtonPress(int row, int col);
+
+extern std::string currentInput;
 
 #endif // INPUT_HANDLER_H

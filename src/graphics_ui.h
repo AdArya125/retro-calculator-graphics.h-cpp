@@ -9,5 +9,6 @@ void drawButtons(bool trigVisible = false);
 void highlightButton(int row, int col);
 void drawTextLabels(bool trigVisible = false);
 void clearUI();
+void drawDisplay(const string &text)
 
 #endif // GRAPHICS_UI_H

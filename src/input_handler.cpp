@@ -1,50 +1,49 @@
 #include "input_handler.h"
 #include "graphics_ui.h"
-
-// Initial selection state
-int selectedRow = 0;
-int selectedCol = 0;
-const int numRows = 6;
-const int numCols = 5;
-
-void updateHighlight()
-{
-    clearUI();
-    drawButtons(true); // Pass false if you want to hide trig buttons
-    highlightButton(selectedRow, selectedCol);
-}
-
-void handleKeyPress(char key, bool &running)
-{
-    switch (key)
-    {
-    case 72: // Up arrow
-        selectedRow = (selectedRow - 1 + numRows) % numRows;
-        break;
-    case 80: // Down arrow
-        selectedRow = (selectedRow + 1) % numRows;
-        break;
-    case 75: // Left arrow
-        selectedCol = (selectedCol - 1 + numCols) % numCols;
-        break;
-    case 77: // Right arrow
-        selectedCol = (selectedCol + 1) % numCols;
-        break;
-    case 13: // Enter
-        handleButtonPress(selectedRow, selectedCol);
-        break;
-    case 27: // Esc
-        running = false;
-        break;
-    default:
-        break;
-    }
-
-    updateHighlight();
-}
+#include "ui_constants.h"
 
 void handleButtonPress(int row, int col)
 {
-    // Stub: You can connect this to actual calculator logic
-    cout << "Pressed button at Row: " << row << ", Col: " << col << endl;
+    const char *label = buttonLabels[row][col];
+
+    if (!label)
+        return;
+
+    cout << "Pressed: " << label << endl;
+
+    if (strcmp(label, "=") == 0)
+    {
+        try
+        {
+            string postfix = ExpressionEvaluator(stack).infixToPostfix(currentInput);
+            long double result = ExpressionEvaluator(stack).evaluatePostfix(postfix);
+            currentInput = to_string(result);
+        }
+        catch (...)
+        {
+            currentInput = "ERROR";
+        }
+    }
+
+    else if (strcmp(label, "AC") == 0)
+    {
+        currentInput.clear();
+    }
+    else if (strcmp(label, "<--") == 0)
+    {
+        if (!currentInput.empty())
+            currentInput.pop_back();
+    }
+    else
+    {
+        // Append label to expression buffer
+        currentInput += label;
+    }
+}
+void updateHighlight()
+{
+    clearUI();
+    drawButtons(true);
+    highlightButton(selectedRow, selectedCol);
+    drawDisplay(currentInput); // <-- NEW
 }
